@@ -12,7 +12,7 @@ module BugReports
     def validate
       response = openai_client.chat(
         parameters: {
-          model: "gpt-4o-mini",
+          model: BUG_REPORT_AI_MODEL,
           messages: [
             {
               role: "system",

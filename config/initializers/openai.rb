@@ -20,3 +20,8 @@ else
     config.request_timeout = request_timeout_in_seconds
   end
 end
+
+# Bug report AI model configuration
+# Set the model to use for bug report validation via Vercel AI Gateway
+# Examples: "anthropic/claude-haiku-4.5", "anthropic/claude-sonnet-4", "gpt-4o-mini"
+BUG_REPORT_AI_MODEL = "anthropic/claude-haiku-4.5"
