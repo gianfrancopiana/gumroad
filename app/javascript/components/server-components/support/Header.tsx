@@ -4,7 +4,7 @@ import { createCast } from "ts-safe-cast";
 
 import { register } from "$app/utils/serverComponentUtil";
 
-import { Button } from "$app/components/Button";
+import { Button, NavigationButton } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
 import { UnauthenticatedNewTicketModal } from "$app/components/support/UnauthenticatedNewTicketModal";
 import { UnreadTicketsBadge } from "$app/components/support/UnreadTicketsBadge";
@@ -50,13 +50,35 @@ export function SupportHeader({
               <Icon name="solid-search" />
             </a>
           ) : isAnonymousUserOnHelpCenter ? (
-            <Button color="accent" onClick={() => setIsUnauthenticatedNewTicketOpen(true)}>
-              Contact support
-            </Button>
+            <>
+              <Button color="accent" onClick={() => setIsUnauthenticatedNewTicketOpen(true)}>
+                Contact support
+              </Button>
+              <NavigationButton
+                color="accent"
+                outline
+                href="https://github.com/antiwork/gumroad/issues/new?template=bug_report.yml"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Report a bug
+              </NavigationButton>
+            </>
           ) : hasHelperSession ? (
-            <Button color="accent" onClick={onOpenNewTicket}>
-              New ticket
-            </Button>
+            <>
+              <Button color="accent" onClick={onOpenNewTicket}>
+                New ticket
+              </Button>
+              <NavigationButton
+                color="accent"
+                outline
+                href="https://github.com/antiwork/gumroad/issues/new?template=bug_report.yml"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Report a bug
+              </NavigationButton>
+            </>
           ) : null
         }
       >
