@@ -47,21 +47,19 @@ module BugReports
       end
 
       def still_valid_for_github?(bug_report)
-        # Check for common spam patterns
         description = bug_report.sanitized_description || bug_report.description
         return false if description.blank?
         return false if description.length < 20
 
-        # Check for obvious spam patterns
+        return false unless description.match?(/[a-zA-Z]/)
+
         spam_patterns = [
           /\b(test|testing|test123|asdf|qwerty)\b/i,
-          /^[^a-z]*$/i, # Only special characters/numbers
-          /(.)\1{10,}/, # Repeated characters
-          /\b(buy now|click here|free|discount|promo|offer)\b/i # Spam keywords
+          /(.)\1{10,}/,
+          /\b(buy now|click here|free|discount|promo|offer)\b/i
         ]
 
         spam_patterns.none? { |pattern| description.match?(pattern) }
       end
   end
 end
-
