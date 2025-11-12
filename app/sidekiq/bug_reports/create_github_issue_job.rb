@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BugReports
-  class CreateGitHubIssueJob
+  class CreateGithubIssueJob
     include Sidekiq::Job
     sidekiq_options retry: 3, queue: :low
 
@@ -10,7 +10,7 @@ module BugReports
       return if bug_report.nil?
       return if bug_report.github_issue_created?
 
-      service = GitHubIssueService.new
+      service = GithubIssueService.new
       issue_data = service.create_issue(bug_report)
 
       if issue_data

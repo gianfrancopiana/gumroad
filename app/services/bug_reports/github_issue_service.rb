@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module BugReports
-  class GitHubIssueService
+  class GithubIssueService
     include HTTParty
 
     base_uri "https://api.github.com"

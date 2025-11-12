@@ -97,7 +97,8 @@ EMAIL_CREDENTIALS = {
 default_smtp_settings = MailerInfo.default_delivery_method_options(domain: :gumroad).merge(
   port: 587,
   authentication: :plain,
-  enable_starttls_auto: true
+  enable_starttls_auto: true,
+  openssl_verify_mode: (Rails.env.development? ? OpenSSL::SSL::VERIFY_NONE : nil)
 )
 
 case Rails.env

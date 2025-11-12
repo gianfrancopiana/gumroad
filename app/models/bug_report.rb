@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class BugReport < ApplicationRecord
-  include ExternalId
   include Deletable
 
   belongs_to :user, optional: true
@@ -10,9 +9,12 @@ class BugReport < ApplicationRecord
   has_one_attached :screenshot_sanitized
   has_one_attached :console_logs
 
+  before_validation :assign_external_id, on: :create
+
   validates :page_url, presence: true
   validates :description, presence: true
   validates :status, presence: true
+  validates :external_id, uniqueness: true
 
   enum status: {
     pending: "pending",
@@ -30,7 +32,7 @@ class BugReport < ApplicationRecord
 
   def user_type
     return "anonymous" unless user
-    user.has_any_sales? ? "seller" : "buyer"
+    user.is_buyer? ? "buyer" : "seller"
   end
 
   def validation_result_data
@@ -65,5 +67,19 @@ class BugReport < ApplicationRecord
   def needs_clarification?
     status == "needs_clarification"
   end
+
+  private
+    def assign_external_id
+      return if external_id.present?
+
+      self.external_id = generate_unique_external_id
+    end
+
+    def generate_unique_external_id
+      loop do
+        candidate = SecureRandom.alphanumeric(12).downcase
+        break candidate unless self.class.exists?(external_id: candidate)
+      end
+    end
 end
 

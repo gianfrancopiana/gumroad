@@ -47,7 +47,8 @@ class Api::BugReportsController < ApplicationController
 
     def throttle_submission
       throttle_key = "bug_report_submission:#{request.remote_ip}"
-      throttle!(key: throttle_key, limit: 10, period: 1.hour)
+      limit = Rails.env.production? ? 10 : 100
+      throttle!(key: throttle_key, limit: limit, period: 1.hour)
     end
 end
 

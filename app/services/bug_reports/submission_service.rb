@@ -25,7 +25,7 @@ module BugReports
         bug_report.update(status: "needs_clarification")
       else
         bug_report.update(status: "validated")
-        BugReports::CreateGitHubIssueJob.perform_async(bug_report.id)
+        BugReports::CreateGithubIssueJob.perform_async(bug_report.id)
       end
 
       {
@@ -41,7 +41,8 @@ module BugReports
       def validate_report
         AiValidator.new(
           description: @params[:description],
-          page_url: @params[:page_url]
+          page_url: @params[:page_url],
+          technical_context: build_technical_context
         ).validate
       end
 

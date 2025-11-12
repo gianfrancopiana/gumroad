@@ -76,6 +76,8 @@ custom_short_domain = ENV["CUSTOM_SHORT_DOMAIN"]
 environment         = ENV["RAILS_ENV"]&.to_sym || :development
 config              = configuration_by_env[environment]
 
+config[:default_email_domain] = ENV["DEFAULT_EMAIL_DOMAIN"] if ENV["DEFAULT_EMAIL_DOMAIN"].present?
+
 PROTOCOL            = config[:protocol]
 DOMAIN              = custom_domain || config[:domain]
 ASSET_DOMAIN        = config[:asset_domain]
