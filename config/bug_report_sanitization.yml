@@ -1,0 +1,74 @@
+default:
+  blur_patterns:
+    - email_addresses: true
+    - credit_card_numbers: true
+    - phone_numbers: true
+    - api_keys: true
+    - personal_names: false
+    - addresses: false
+
+checkout:
+  blur_patterns:
+    - email_addresses: true
+    - credit_card_numbers: true
+    - phone_numbers: true
+    - api_keys: true
+    - personal_names: true
+    - addresses: true
+  blur_selectors:
+    - "[data-payment-form]"
+    - "[data-billing-info]"
+    - "[data-cart-contents]"
+    - ".payment-form"
+    - ".billing-address"
+
+dashboard:
+  blur_patterns:
+    - email_addresses: true
+    - credit_card_numbers: true
+    - phone_numbers: true
+    - api_keys: true
+    - personal_names: false
+    - addresses: false
+  blur_selectors:
+    - "[data-revenue-info]"
+    - "[data-customer-emails]"
+    - "[data-payout-info]"
+    - ".revenue-display"
+    - ".customer-list"
+
+settings:
+  blur_patterns:
+    - email_addresses: true
+    - credit_card_numbers: true
+    - phone_numbers: true
+    - api_keys: true
+    - personal_names: false
+    - addresses: false
+  blur_selectors:
+    - "[data-api-keys]"
+    - "[data-connected-accounts]"
+    - "[data-email-settings]"
+    - ".api-key-display"
+    - ".account-info"
+
+product:
+  blur_patterns:
+    - email_addresses: false
+    - credit_card_numbers: false
+    - phone_numbers: false
+    - api_keys: false
+    - personal_names: false
+    - addresses: false
+  blur_selectors: []
+
+marketing:
+  blur_patterns:
+    - email_addresses: false
+    - credit_card_numbers: false
+    - phone_numbers: false
+    - api_keys: false
+    - personal_names: false
+    - addresses: false
+  blur_selectors: []
+

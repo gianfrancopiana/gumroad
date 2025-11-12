@@ -1,0 +1,23 @@
+<p>Your bug report has been updated.</p>
+
+<% if @bug_report.title.present? %>
+  <h2><%= @bug_report.title %></h2>
+<% end %>
+
+<p><strong>Status:</strong> <%= @bug_report.status.humanize %></p>
+
+<% if @bug_report.github_issue_url.present? %>
+  <p>
+    <strong>GitHub Issue:</strong>
+    <a href="<%= @bug_report.github_issue_url %>">View on GitHub</a>
+  </p>
+<% end %>
+
+<p>
+  <strong>Internal ID:</strong> <%= @bug_report.external_id %>
+</p>
+
+<% if @bug_report.internal_notes.present? %>
+  <p><strong>Note:</strong> <%= @bug_report.internal_notes %></p>
+<% end %>
+

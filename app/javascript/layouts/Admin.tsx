@@ -8,6 +8,7 @@ import AdminSearchPopover from "$app/components/Admin/SearchPopover";
 import { ClientAlert, useClientAlert, type AlertPayload } from "$app/components/ClientAlertProvider";
 import LoadingSkeleton from "$app/components/LoadingSkeleton";
 import useRouteLoading from "$app/components/useRouteLoading";
+import { BugReportWidget } from "$app/components/bug-report/BugReportWidget";
 
 type PageProps = {
   title: string;
@@ -40,6 +41,7 @@ const Admin = ({ children }: { children: React.ReactNode }) => {
         {isRouteLoading ? <LoadingSkeleton /> : null}
         <div className={classNames("p-4 md:p-8", { hidden: isRouteLoading })}>{children}</div>
       </main>
+      <BugReportWidget />
     </div>
   );
 };

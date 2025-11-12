@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_10_144032) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_11_230653) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 191, null: false
     t.string "record_type", limit: 191, null: false
@@ -329,6 +329,35 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_10_144032) do
     t.index ["buyer_email"], name: "index_blocked_customer_objects_on_buyer_email"
     t.index ["seller_id", "object_type", "object_value"], name: "idx_blocked_customer_objects_on_seller_and_object_type_and_value", unique: true
     t.index ["seller_id"], name: "index_blocked_customer_objects_on_seller_id"
+  end
+
+  create_table "bug_reports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "user_type", limit: 50
+    t.string "page_url", null: false
+    t.text "description", null: false
+    t.text "sanitized_description"
+    t.string "title"
+    t.string "category"
+    t.string "severity"
+    t.string "status", default: "pending", null: false
+    t.string "github_issue_number"
+    t.string "github_issue_url"
+    t.decimal "quality_score", precision: 5, scale: 2
+    t.text "validation_result"
+    t.text "rejection_reason"
+    t.text "internal_notes"
+    t.json "technical_context"
+    t.json "blur_metadata"
+    t.string "external_id", limit: 191, null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_bug_reports_on_created_at"
+    t.index ["external_id"], name: "index_bug_reports_on_external_id", unique: true
+    t.index ["github_issue_number"], name: "index_bug_reports_on_github_issue_number"
+    t.index ["status"], name: "index_bug_reports_on_status"
+    t.index ["user_id"], name: "index_bug_reports_on_user_id"
   end
 
   create_table "bundle_product_purchases", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

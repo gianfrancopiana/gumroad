@@ -46,6 +46,12 @@ const Nav = () => {
           href={Routes.admin_sales_reports_url(routeParams)}
           component={Link}
         />
+        <InertiaNavLink
+          text="Bug reports"
+          icon="info-circle-fill"
+          href={`https://${routeParams.host}/admin/bug_reports`}
+          component={Link}
+        />
       </section>
     </NavFramework>
   );

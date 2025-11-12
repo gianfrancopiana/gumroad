@@ -92,6 +92,7 @@ import WishlistsFollowingPage from "$app/components/server-components/WishlistsF
 import WishlistsPage from "$app/components/server-components/WishlistsPage";
 import WorkflowsPage from "$app/components/server-components/WorkflowsPage";
 import CodeSnippet from "$app/components/ui/CodeSnippet";
+import { BugReportWidget } from "$app/components/bug-report/BugReportWidget";
 
 ReactOnRails.register({
   AdminActionButton,
@@ -183,4 +184,5 @@ ReactOnRails.register({
   WishlistsPage,
   WorkflowsPage,
   UtmLinksPage,
+  BugReportWidget,
 });

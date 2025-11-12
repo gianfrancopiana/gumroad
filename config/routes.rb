@@ -145,6 +145,8 @@ Rails.application.routes.draw do
     delete "/discover_search_autocomplete", to: "discover/search_autocomplete#delete_search_suggestion"
 
     put "/links/:id/sections", to: "links#update_sections"
+
+    resources :bug_reports, only: [:create], controller: "api/bug_reports"
   end
 
   constraints DiscoverDomainConstraint do

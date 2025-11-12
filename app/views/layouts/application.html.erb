@@ -29,6 +29,7 @@
     </div>
     <%= javascript_include_tag "application" %>
     <%= load_pack("base") unless @hide_layouts %>
+    <%= react_component "BugReportWidget", {}, { prerender: false } unless @hide_layouts %>
     <%= yield :script %>
   </body>
 </html>

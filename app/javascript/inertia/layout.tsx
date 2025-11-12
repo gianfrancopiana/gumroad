@@ -7,6 +7,7 @@ import { Nav } from "$app/components/client-components/Nav";
 import { useClientAlert, ClientAlert } from "$app/components/ClientAlertProvider";
 import LoadingSkeleton from "$app/components/LoadingSkeleton";
 import useRouteLoading from "$app/components/useRouteLoading";
+import { BugReportWidget } from "$app/components/bug-report/BugReportWidget";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const isRouteLoading = useRouteLoading();
@@ -22,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {isRouteLoading ? <LoadingSkeleton /> : null}
         <main className={classNames("flex-1 overflow-y-auto", { hidden: isRouteLoading })}>{children}</main>
       </div>
+      <BugReportWidget />
     </>
   );
 }

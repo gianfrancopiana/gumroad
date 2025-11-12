@@ -1,0 +1,21 @@
+<p>Thank you for reporting a bug! We've received your report and will investigate it.</p>
+
+<% if @bug_report.title.present? %>
+  <h2><%= @bug_report.title %></h2>
+<% end %>
+
+<p><%= @bug_report.sanitized_description || @bug_report.description %></p>
+
+<% if @bug_report.github_issue_url.present? %>
+  <p>
+    <strong>GitHub Issue:</strong>
+    <a href="<%= @bug_report.github_issue_url %>">View on GitHub</a>
+  </p>
+<% end %>
+
+<p>
+  <strong>Internal ID:</strong> <%= @bug_report.external_id %>
+</p>
+
+<p>You can track the status of this bug report on GitHub or check back with us using the internal ID above.</p>
+

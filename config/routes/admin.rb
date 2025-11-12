@@ -174,4 +174,6 @@ namespace :admin do
   scope module: "users" do
     post :block_ip_address
   end
+
+  resources :bug_reports, only: [:index, :show, :update]
 end
