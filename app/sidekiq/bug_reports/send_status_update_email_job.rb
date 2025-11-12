@@ -16,4 +16,3 @@ module BugReports
     end
   end
 end
-

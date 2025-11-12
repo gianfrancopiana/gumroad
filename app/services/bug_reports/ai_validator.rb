@@ -123,8 +123,18 @@ module BugReports
 
       def build_validation_result(result)
         valid = result[:valid] == true
-        needs_clarification = result[:needs_clarification] == true
         quality_score = result[:quality_score] || 0
+        needs_clarification = result[:needs_clarification] == true
+
+        # Enforce quality score rules: if quality_score >= 70, it should NOT need clarification
+        # Quality score 50-69: Needs clarification
+        # Quality score 70+: Good quality, should NOT need clarification
+        if quality_score >= 70
+          needs_clarification = false
+          clarification_message = nil
+        else
+          clarification_message = result[:clarification_message]
+        end
 
         # A report is valid if:
         # 1. AI marked it as valid (quality_score >= 70), OR
@@ -141,7 +151,7 @@ module BugReports
           sanitized_description: result[:sanitized_description] || description,
           rejection_reason: result[:rejection_reason],
           needs_clarification: needs_clarification,
-          clarification_message: result[:clarification_message]
+          clarification_message: clarification_message
         )
       end
 
@@ -294,4 +304,3 @@ module BugReports
       end
   end
 end
-
