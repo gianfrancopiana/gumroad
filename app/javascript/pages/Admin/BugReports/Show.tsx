@@ -26,7 +26,7 @@ type BugReportDetail = {
   user: {
     id: string;
     email: string;
-    name: string;
+    name: string | null;
   } | null;
 };
 
@@ -47,8 +47,8 @@ export default function AdminBugReportsShow() {
       await router.put(`/admin/bug_reports/${bug_report.id}`, {
         bug_report: {
           status,
-          internal_notes: internalNotes
-        }
+          internal_notes: internalNotes,
+        },
       });
     } catch (error) {
       console.error("Failed to update bug report:", error);
@@ -66,36 +66,36 @@ export default function AdminBugReportsShow() {
       </div>
 
       <div className="mb-6">
-        <p className="text-sm text-muted-foreground">ID: {bug_report.id}</p>
+        <p className="text-muted-foreground text-sm">ID: {bug_report.id}</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-4">
           <div>
             <h2 className="mb-2 text-lg font-semibold">Description</h2>
-            <div className="rounded-md border border-input bg-background p-4">
+            <div className="border-input rounded-md border bg-background p-4">
               <p className="whitespace-pre-wrap">{bug_report.description}</p>
             </div>
           </div>
 
           {bug_report.sanitized_description && bug_report.sanitized_description !== bug_report.description && (
             <div>
-              <h2 className="mb-2 text-lg font-semibold">Sanitized Description</h2>
-              <div className="rounded-md border border-input bg-background p-4">
+              <h2 className="mb-2 text-lg font-semibold">Sanitized description</h2>
+              <div className="border-input rounded-md border bg-background p-4">
                 <p className="whitespace-pre-wrap">{bug_report.sanitized_description}</p>
               </div>
             </div>
           )}
 
           <div>
-            <h2 className="mb-2 text-lg font-semibold">Status & Metadata</h2>
-            <div className="space-y-2 rounded-md border border-input bg-background p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Status:</span>
+            <h2 className="mb-2 text-lg font-semibold">Metadata</h2>
+            <div className="border-input space-y-3 rounded-md border bg-background p-4">
+              <div className="flex items-center gap-4 py-1">
+                <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">Status</span>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="rounded-md border border-input bg-background px-2 py-1 text-sm"
+                  className="border-input focus:ring-primary min-w-0 flex-1 rounded-md border bg-background px-3 py-1.5 text-sm font-medium focus:ring-2 focus:ring-offset-0 focus:outline-none"
                 >
                   <option value="pending">Pending</option>
                   <option value="validated">Validated</option>
@@ -106,30 +106,38 @@ export default function AdminBugReportsShow() {
                   <option value="duplicate">Duplicate</option>
                 </select>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Category:</span>
-                <span className="text-sm">{bug_report.category || "-"}</span>
+              <div className="flex items-center gap-4 py-1">
+                <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">Category</span>
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium capitalize">
+                  {bug_report.category || "-"}
+                </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Severity:</span>
-                <span className="text-sm">{bug_report.severity || "-"}</span>
+              <div className="flex items-center gap-4 py-1">
+                <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">Severity</span>
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium capitalize">
+                  {bug_report.severity || "-"}
+                </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Quality Score:</span>
-                <span className="text-sm">{bug_report.quality_score ? `${bug_report.quality_score}/100` : "-"}</span>
+              <div className="flex items-center gap-4 py-1">
+                <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">Quality score</span>
+                <span className="text-sm font-medium">
+                  {bug_report.quality_score ? `${bug_report.quality_score}/100` : "-"}
+                </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">User Type:</span>
-                <span className="text-sm">{bug_report.user_type}</span>
+              <div className="flex items-center gap-4 py-1">
+                <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">User type</span>
+                <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium capitalize">
+                  {bug_report.user_type}
+                </span>
               </div>
               {bug_report.github_issue_url && (
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">GitHub Issue:</span>
+                <div className="flex items-center gap-4 py-1">
+                  <span className="text-muted-foreground w-32 shrink-0 text-sm font-medium">GitHub issue</span>
                   <a
                     href={bug_report.github_issue_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-primary hover:underline"
+                    className="text-primary text-sm font-medium hover:underline"
                   >
                     #{bug_report.github_issue_number}
                   </a>
@@ -139,12 +147,12 @@ export default function AdminBugReportsShow() {
           </div>
 
           <div>
-            <h2 className="mb-2 text-lg font-semibold">Internal Notes</h2>
+            <h2 className="mb-2 text-lg font-semibold">Internal notes</h2>
             <textarea
               value={internalNotes}
               onChange={(e) => setInternalNotes(e.target.value)}
               rows={4}
-              className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              className="border-input w-full rounded-md border bg-background px-3 py-2 text-sm"
               placeholder="Add internal notes (not visible on GitHub)..."
             />
           </div>
@@ -152,7 +160,7 @@ export default function AdminBugReportsShow() {
           <button
             onClick={handleUpdate}
             disabled={isSaving}
-            className="w-full rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 w-full rounded-md px-4 py-2 text-sm disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Save Changes"}
           </button>
@@ -165,7 +173,7 @@ export default function AdminBugReportsShow() {
               href={bug_report.page_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-primary hover:underline"
+              className="text-primary text-sm hover:underline"
             >
               {bug_report.page_url}
             </a>
@@ -174,17 +182,14 @@ export default function AdminBugReportsShow() {
           {bug_report.user && (
             <div>
               <h2 className="mb-2 text-lg font-semibold">User</h2>
-              <div className="rounded-md border border-input bg-background p-4">
+              <div className="border-input rounded-md border bg-background p-4">
                 <p className="text-sm">
-                  <strong>Name:</strong> {bug_report.user.name}
+                  <strong>Name:</strong> {bug_report.user.name || "N/A"}
                 </p>
                 <p className="text-sm">
                   <strong>Email:</strong> {bug_report.user.email}
                 </p>
-                <a
-                  href={`/admin/users/${bug_report.user.id}`}
-                  className="text-sm text-primary hover:underline"
-                >
+                <a href={`/admin/users/${bug_report.user.id}`} className="text-primary text-sm hover:underline">
                   View User →
                 </a>
               </div>
@@ -196,20 +201,20 @@ export default function AdminBugReportsShow() {
               <h2 className="mb-2 text-lg font-semibold">Screenshots</h2>
               <div className="space-y-2">
                 <div>
-                  <p className="mb-1 text-sm font-medium">Original (Internal Only)</p>
+                  <p className="mb-1 text-sm font-medium">Original (Internal only)</p>
                   <img
                     src={bug_report.screenshot_original_url}
                     alt="Original screenshot"
-                    className="max-w-full rounded-md border border-input"
+                    className="border-input max-w-full rounded-md border"
                   />
                 </div>
                 {bug_report.screenshot_sanitized_url && (
                   <div>
-                    <p className="mb-1 text-sm font-medium">Sanitized (Public)</p>
+                    <p className="mb-1 text-sm font-medium">Sanitized (public)</p>
                     <img
                       src={bug_report.screenshot_sanitized_url}
                       alt="Sanitized screenshot"
-                      className="max-w-full rounded-md border border-input"
+                      className="border-input max-w-full rounded-md border"
                     />
                   </div>
                 )}
@@ -219,12 +224,12 @@ export default function AdminBugReportsShow() {
 
           {bug_report.console_logs_url && (
             <div>
-              <h2 className="mb-2 text-lg font-semibold">Console Logs</h2>
+              <h2 className="mb-2 text-lg font-semibold">Console logs</h2>
               <a
                 href={bug_report.console_logs_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-primary hover:underline"
+                className="text-primary text-sm hover:underline"
               >
                 Download Console Logs
               </a>
@@ -233,8 +238,8 @@ export default function AdminBugReportsShow() {
 
           {bug_report.technical_context && Object.keys(bug_report.technical_context).length > 0 && (
             <div>
-              <h2 className="mb-2 text-lg font-semibold">Technical Context</h2>
-              <pre className="max-h-64 overflow-auto rounded-md border border-input bg-background p-4 text-xs">
+              <h2 className="mb-2 text-lg font-semibold">Technical context</h2>
+              <pre className="border-input max-h-64 overflow-auto rounded-md border bg-background p-4 text-xs">
                 {JSON.stringify(bug_report.technical_context, null, 2)}
               </pre>
             </div>
@@ -242,8 +247,8 @@ export default function AdminBugReportsShow() {
 
           {bug_report.validation_result && (
             <div>
-              <h2 className="mb-2 text-lg font-semibold">Validation Result</h2>
-              <pre className="max-h-64 overflow-auto rounded-md border border-input bg-background p-4 text-xs">
+              <h2 className="mb-2 text-lg font-semibold">Validation result</h2>
+              <pre className="border-input max-h-64 overflow-auto rounded-md border bg-background p-4 text-xs">
                 {JSON.stringify(bug_report.validation_result, null, 2)}
               </pre>
             </div>
@@ -253,4 +258,3 @@ export default function AdminBugReportsShow() {
     </section>
   );
 }
-

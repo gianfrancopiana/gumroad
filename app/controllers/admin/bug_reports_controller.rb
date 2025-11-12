@@ -76,7 +76,7 @@ class Admin::BugReportsController < Admin::BaseController
         status: bug_report.status,
         category: bug_report.category,
         severity: bug_report.severity,
-        quality_score: bug_report.quality_score,
+        quality_score: bug_report.quality_score&.to_f,
         user_type: bug_report.user_type,
         page_url: bug_report.page_url,
         github_issue_url: bug_report.github_issue_url,

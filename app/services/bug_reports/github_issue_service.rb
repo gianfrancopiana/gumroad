@@ -82,25 +82,54 @@ module BugReports
       end
 
       def issue_body(bug_report)
+        description = bug_report.sanitized_description.presence || bug_report.description
+
         body_parts = [
-          bug_report.sanitized_description || bug_report.description,
+          description,
           "",
-          "## Technical Details",
-          "- **Page URL**: #{bug_report.page_url}",
-          "- **User Type**: #{bug_report.user_type}",
-          "- **Category**: #{bug_report.category || 'Uncategorized'}",
-          "- **Severity**: #{bug_report.severity || 'Unknown'}"
+          "## Technical Details"
         ]
 
+        body_parts << "- **Page URL**: #{bug_report.page_url}"
+        body_parts << "- **User Type**: #{bug_report.user_type.capitalize}"
+        body_parts << "- **Category**: #{bug_report.category&.capitalize || 'Uncategorized'}"
+        body_parts << "- **Severity**: #{bug_report.severity&.capitalize || 'Unknown'}"
+
+        if bug_report.quality_score.present?
+          body_parts << "- **Quality Score**: #{bug_report.quality_score}/100"
+        end
+
+        if bug_report.technical_context_data.present?
+          tech_context = bug_report.technical_context_data
+
+          if tech_context["browser"] || tech_context[:browser]
+            browser = tech_context["browser"] || tech_context[:browser]
+            browser = browser.length > 100 ? "#{browser[0...100]}..." : browser
+            body_parts << "- **Browser**: #{browser}"
+          end
+
+          if tech_context["os"] || tech_context[:os]
+            body_parts << "- **OS**: #{tech_context["os"] || tech_context[:os]}"
+          end
+
+          if tech_context["viewport"] || tech_context[:viewport]
+            body_parts << "- **Viewport**: #{tech_context["viewport"] || tech_context[:viewport]}"
+          end
+        end
+
         if bug_report.screenshot_sanitized.attached?
-          body_parts << "- **Screenshot**: Attached"
+          body_parts << "- **Screenshot**: Attached (sanitized for privacy)"
         end
 
         body_parts << ""
         body_parts << "---"
-        body_parts << "*This issue was automatically created from a bug report. Internal ID: #{bug_report.external_id}*"
+        body_parts << "*This issue was automatically created from a bug report submitted by a user.*"
+        body_parts << "*Internal ID: `#{bug_report.external_id}`*"
 
-        { title: bug_report.title || "Bug Report", body: body_parts.join("\n"), labels: issue_labels(bug_report) }
+        title = bug_report.title.presence || "Bug Report"
+        title = title[0...80] if title.length > 80 # GitHub title limit
+
+        { title: title, body: body_parts.join("\n"), labels: issue_labels(bug_report) }
       end
 
       def issue_labels(bug_report)
