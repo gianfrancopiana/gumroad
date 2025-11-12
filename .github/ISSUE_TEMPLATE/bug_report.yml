@@ -1,0 +1,23 @@
+name: Bug Report
+description: Report a bug
+labels: ["bug"]
+body:
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      placeholder: |
+        What happened? What were you trying to do?
+
+        If you know how to reproduce it:
+        1. Go to...
+        2. Click on...
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional info
+      description: Browser, device, screenshots - anything that helps
